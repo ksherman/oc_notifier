@@ -1,0 +1,44 @@
+<.header>
+  Listing Recipients
+  <:actions>
+    <.link patch={~p"/recipients/new"}>
+      <.button>New Recipient</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="recipients"
+  rows={@streams.recipients}
+  row_click={fn {_id, recipient} -> JS.navigate(~p"/recipients/#{recipient}") end}
+>
+  <:col :let={{_id, recipient}} label="Name"><%= recipient.name %></:col>
+  <:col :let={{_id, recipient}} label="Phone"><%= recipient.phone %></:col>
+  <:col :let={{_id, recipient}} label="Email"><%= recipient.email %></:col>
+  <:col :let={{_id, recipient}} label="Is active"><%= recipient.is_active %></:col>
+  <:action :let={{_id, recipient}}>
+    <div class="sr-only">
+      <.link navigate={~p"/recipients/#{recipient}"}>Show</.link>
+    </div>
+    <.link patch={~p"/recipients/#{recipient}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, recipient}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: recipient.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="recipient-modal" show on_cancel={JS.patch(~p"/recipients")}>
+  <.live_component
+    module={OcNotifierWeb.RecipientLive.FormComponent}
+    id={@recipient.id || :new}
+    title={@page_title}
+    action={@live_action}
+    recipient={@recipient}
+    patch={~p"/recipients"}
+  />
+</.modal>

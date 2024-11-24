@@ -1,0 +1,29 @@
+<.header>
+  Recipient <%= @recipient.id %>
+  <:subtitle>This is a recipient record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/recipients/#{@recipient}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit recipient</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @recipient.name %></:item>
+  <:item title="Phone"><%= @recipient.phone %></:item>
+  <:item title="Email"><%= @recipient.email %></:item>
+  <:item title="Is active"><%= @recipient.is_active %></:item>
+</.list>
+
+<.back navigate={~p"/recipients"}>Back to recipients</.back>
+
+<.modal :if={@live_action == :edit} id="recipient-modal" show on_cancel={JS.patch(~p"/recipients/#{@recipient}")}>
+  <.live_component
+    module={OcNotifierWeb.RecipientLive.FormComponent}
+    id={@recipient.id}
+    title={@page_title}
+    action={@live_action}
+    recipient={@recipient}
+    patch={~p"/recipients/#{@recipient}"}
+  />
+</.modal>
