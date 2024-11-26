@@ -20,6 +20,13 @@ if System.get_env("PHX_SERVER") do
   config :oc_notifier, OcNotifierWeb.Endpoint, server: true
 end
 
+config :oc_notifier,
+  twilio_phone_number:
+    System.get_env("TWILIO_PHONE_NUMBER") ||
+      raise("""
+      environment variable TWILIO_PHONE_NUMBER is missing.
+      """)
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||

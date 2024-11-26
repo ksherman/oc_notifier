@@ -4,6 +4,7 @@ defmodule OcNotifier.Messages do
   """
 
   import Ecto.Query, warn: false
+
   alias OcNotifier.Repo
 
   alias OcNotifier.Messages.Message
@@ -19,6 +20,16 @@ defmodule OcNotifier.Messages do
   """
   def list_message do
     Repo.all(Message)
+  end
+
+  def get_latest_message do
+    yesterday = DateTime.utc_now() |> DateTime.add(-24, :hour)
+
+    Message
+    |> where([m], m.sent_at > ^yesterday)
+    |> order_by(desc: :inserted_at)
+    |> limit(1)
+    |> Repo.one()
   end
 
   @doc """

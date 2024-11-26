@@ -3,28 +3,36 @@ defmodule OcNotifierWeb.MessageLive.FormComponent do
 
   alias OcNotifier.Messages
 
+  import SaladUI.Textarea
+
   @impl true
   def render(assigns) do
     ~H"""
-    <div>
+    <div class="flex flex-col gap-6">
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage message records in your database.</:subtitle>
+        <:subtitle>Use this form to send messages to subscribers.</:subtitle>
       </.header>
 
-      <.simple_form
+      <.form
+        :let={f}
         for={@form}
-        id="message-form"
+        phx-submit="save"
+        class="grid w-full items-start gap-6"
         phx-target={@myself}
         phx-change="validate"
-        phx-submit="save"
       >
-        <.input field={@form[:text]} type="text" label="Text" />
+        <.textarea
+          name={f[:text].name}
+          value={f[:text].value}
+          class={error_class(f[:text])}
+          placeholder="Your message"
+        />
+
         <.input field={@form[:send_at]} type="datetime-local" label="Send at" />
-        <:actions>
-          <.button phx-disable-with="Saving...">Save Message</.button>
-        </:actions>
-      </.simple_form>
+
+        <.button phx-disable-with="Saving and scheduling...">Send Message</.button>
+      </.form>
     </div>
     """
   end
@@ -80,4 +88,8 @@ defmodule OcNotifierWeb.MessageLive.FormComponent do
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
+
+  defp error_class(field) do
+    if Enum.empty?(field.errors), do: "", else: "border-destructive text-destructive"
+  end
 end

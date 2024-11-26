@@ -12,6 +12,7 @@ defmodule OcNotifier.Application do
       OcNotifier.Repo,
       {DNSCluster, query: Application.get_env(:oc_notifier, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: OcNotifier.PubSub},
+      {Oban, Application.fetch_env!(:oc_notifier, Oban)},
       # Start the Finch HTTP client for sending emails
       {Finch, name: OcNotifier.Finch},
       # Start a worker by calling: OcNotifier.Worker.start_link(arg)

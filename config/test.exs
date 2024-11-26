@@ -35,3 +35,7 @@ config :phoenix, :plug_init_mode, :runtime
 # Enable helpful, but potentially expensive runtime checks
 config :phoenix_live_view,
   enable_expensive_runtime_checks: true
+
+config :oc_notifier, :basic_auth, username: "admin", password: "secret"
+
+config :oc_notifier, Oban, testing: :inline

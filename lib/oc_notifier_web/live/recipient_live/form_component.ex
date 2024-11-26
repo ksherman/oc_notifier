@@ -9,7 +9,9 @@ defmodule OcNotifierWeb.RecipientLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage recipient records in your database.</:subtitle>
+        <:subtitle>
+          By submitting your phone number, you agree to receive SMS messages from our service. Message and data rates may apply. Message frequency varies. Reply STOP to cancel or HELP for assistance. Carrier charges are the responsibility of the recipient.
+        </:subtitle>
       </.header>
 
       <.simple_form
@@ -24,7 +26,9 @@ defmodule OcNotifierWeb.RecipientLive.FormComponent do
         <.input field={@form[:email]} type="text" label="Email" />
         <.input field={@form[:is_active]} type="checkbox" label="Is active" />
         <:actions>
-          <.button phx-disable-with="Saving...">Save Recipient</.button>
+          <.button class="bg-rose-600 hover:bg-rose-700" phx-disable-with="Saving...">
+            Submit
+          </.button>
         </:actions>
       </.simple_form>
     </div>

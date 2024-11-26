@@ -8,7 +8,7 @@ defmodule OcNotifier.Recipients.Recipient do
     field :name, :string
     field :phone, :integer
     field :email, :string
-    field :is_active, :boolean, default: false
+    field :is_active, :boolean, default: true
 
     timestamps(type: :utc_datetime)
   end
@@ -17,6 +17,6 @@ defmodule OcNotifier.Recipients.Recipient do
   def changeset(recipient, attrs) do
     recipient
     |> cast(attrs, [:name, :phone, :email, :is_active])
-    |> validate_required([:name, :phone, :email, :is_active])
+    |> validate_required([:name, :is_active])
   end
 end

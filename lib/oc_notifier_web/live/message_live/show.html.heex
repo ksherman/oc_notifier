@@ -2,7 +2,7 @@
   Message <%= @message.id %>
   <:subtitle>This is a message record from your database.</:subtitle>
   <:actions>
-    <.link patch={~p"/message/#{@message}/show/edit"} phx-click={JS.push_focus()}>
+    <.link patch={~p"/messages/#{@message}/show/edit"} phx-click={JS.push_focus()}>
       <.button>Edit message</.button>
     </.link>
   </:actions>
@@ -13,15 +13,15 @@
   <:item title="Send at"><%= @message.send_at %></:item>
 </.list>
 
-<.back navigate={~p"/message"}>Back to message</.back>
+<.back navigate={~p"/messages"}>Back to message</.back>
 
-<.modal :if={@live_action == :edit} id="message-modal" show on_cancel={JS.patch(~p"/message/#{@message}")}>
+<.modal :if={@live_action == :edit} id="message-modal" show on_cancel={JS.patch(~p"/messages/#{@message}")}>
   <.live_component
     module={OcNotifierWeb.MessageLive.FormComponent}
     id={@message.id}
     title={@page_title}
     action={@live_action}
     message={@message}
-    patch={~p"/message/#{@message}"}
+    patch={~p"/messages/#{@message}"}
   />
 </.modal>

@@ -6,6 +6,7 @@ config :oc_notifier, OcNotifier.Repo,
   password: "postgres",
   hostname: "localhost",
   database: "oc_notifier_dev",
+  port: 15432,
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -82,3 +83,8 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+config :oc_notifier, :basic_auth, username: "admin", password: "secret"
+
+# Path to install SaladUI components
+config :salad_ui, components_path: Path.join(File.cwd!(), "lib/oc_notifier_web/components")

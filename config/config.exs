@@ -61,6 +61,20 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# SaladUI use tails to properly merge Tailwind CSS classes
+config :tails, colors_file: Path.join(File.cwd!(), "assets/tailwind.colors.json")
+
+config :oc_notifier, Oban,
+  engine: Oban.Engines.Basic,
+  queues: [default: 10],
+  repo: OcNotifier.Repo
+
+config :ex_twilio,
+  account_sid: System.get_env("TWILIO_ACCOUNT_SID"),
+  auth_token: System.get_env("TWILIO_AUTH_TOKEN")
+
+config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

@@ -1,7 +1,7 @@
 <.header>
   Listing Message
   <:actions>
-    <.link patch={~p"/message/new"}>
+    <.link patch={~p"/messages/new"}>
       <.button>New Message</.button>
     </.link>
   </:actions>
@@ -10,15 +10,15 @@
 <.table
   id="message"
   rows={@streams.message_collection}
-  row_click={fn {_id, message} -> JS.navigate(~p"/message/#{message}") end}
+  row_click={fn {_id, message} -> JS.navigate(~p"/messages/#{message}") end}
 >
   <:col :let={{_id, message}} label="Text"><%= message.text %></:col>
   <:col :let={{_id, message}} label="Send at"><%= message.send_at %></:col>
   <:action :let={{_id, message}}>
     <div class="sr-only">
-      <.link navigate={~p"/message/#{message}"}>Show</.link>
+      <.link navigate={~p"/messages/#{message}"}>Show</.link>
     </div>
-    <.link patch={~p"/message/#{message}/edit"}>Edit</.link>
+    <.link patch={~p"/messages/#{message}/edit"}>Edit</.link>
   </:action>
   <:action :let={{id, message}}>
     <.link
@@ -30,13 +30,13 @@
   </:action>
 </.table>
 
-<.modal :if={@live_action in [:new, :edit]} id="message-modal" show on_cancel={JS.patch(~p"/message")}>
+<.modal :if={@live_action in [:new, :edit]} id="message-modal" show on_cancel={JS.patch(~p"/messages")}>
   <.live_component
     module={OcNotifierWeb.MessageLive.FormComponent}
     id={@message.id || :new}
     title={@page_title}
     action={@live_action}
     message={@message}
-    patch={~p"/message"}
+    patch={~p"/messages"}
   />
 </.modal>

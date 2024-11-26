@@ -1,0 +1,53 @@
+<div class="space-y-8">
+  <div class="flex justify-center px-4 py-8 border-b-8 bg-rose-200">
+    <h1 class="text-rose-900">Elgin Winter Shelter Updates</h1>
+  </div>
+
+  <div class="space-y-8">
+    <%= if @latest_message do %>
+      <div class="max-w-2xl mx-auto">
+        <h2>Most Recent Message</h2>
+
+        <div>
+          <p class="mt-4 text-lg"><%= @latest_message.text %></p>
+          <p class="mt-2 text-sm text-gray-600">
+            Sent: <%= Calendar.strftime(
+              @latest_message.inserted_at |> DateTime.shift_zone!(@timezone),
+              "%B %d, %Y at %I:%M %p"
+            ) %>
+          </p>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="max-w-2xl mx-auto">
+      <h2>Subscribe to Updates</h2>
+
+      <div class="py-2 text-sm text-gray-600">
+        Subscribe to receive updates on the Elgin Winter Shelter.
+      </div>
+
+      <.button phx-click="open_modal" class="bg-rose-600 hover:bg-rose-700">
+        Subscribe Now
+      </.button>
+    </div>
+  </div>
+</div>
+
+<%= if @show_modal do %>
+  <.modal
+    id="recipient-modal"
+    show={true}
+    on_cancel={JS.dispatch("click", to: "#close-modal-button")}
+  >
+    <.live_component
+      module={OcNotifierWeb.RecipientLive.FormComponent}
+      id="new-recipient"
+      action={:new}
+      recipient={%OcNotifier.Recipients.Recipient{}}
+      title="Subscribe to Updates"
+      patch={~p"/"}
+    />
+    <button id="close-modal-button" phx-click="close_modal" class="hidden"></button>
+  </.modal>
+<% end %>

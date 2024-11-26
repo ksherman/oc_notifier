@@ -4,9 +4,10 @@ defmodule OcNotifier.Messages.Message do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  schema "message" do
+  schema "messages" do
     field :text, :string
-    field :send_at, :utc_datetime
+    field :send_at, :naive_datetime
+    field :sent_at, :utc_datetime
 
     timestamps(type: :utc_datetime)
   end
@@ -14,7 +15,13 @@ defmodule OcNotifier.Messages.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:text, :send_at])
-    |> validate_required([:text, :send_at])
+    |> cast(attrs, [:text, :send_at, :sent_at])
+    |> validate_required([:text])
+    |> set_default_send_at()
+  end
+
+  defp set_default_send_at(changeset) do
+    changeset
+    |> put_change(:send_at, NaiveDateTime.local_now() |> NaiveDateTime.add(3, :minute))
   end
 end
