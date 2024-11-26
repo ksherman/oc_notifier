@@ -39,7 +39,7 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "oc-notifier.fly.dev"
+  host = System.get_env("PHX_HOST") || "elgin-winter-shelter.org"
   port = String.to_integer(System.get_env("PORT") || "8080")
 
   config :oc_notifier, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
