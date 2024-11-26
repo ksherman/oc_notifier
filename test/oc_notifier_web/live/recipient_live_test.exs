@@ -5,7 +5,12 @@ defmodule OcNotifierWeb.RecipientLiveTest do
   import OcNotifier.RecipientsFixtures
 
   @create_attrs %{name: "some name", phone: 42, email: "some email", is_active: true}
-  @update_attrs %{name: "some updated name", phone: 43, email: "some updated email", is_active: false}
+  @update_attrs %{
+    name: "some updated name",
+    phone: 43,
+    email: "some updated email",
+    is_active: false
+  }
   @invalid_attrs %{name: nil, phone: nil, email: nil, is_active: false}
 
   defp create_recipient(_) do
@@ -17,19 +22,19 @@ defmodule OcNotifierWeb.RecipientLiveTest do
     setup [:create_recipient]
 
     test "lists all recipients", %{conn: conn, recipient: recipient} do
-      {:ok, _index_live, html} = live(conn, ~p"/recipients")
+      {:ok, _index_live, html} = live(conn, ~p"/admin/recipients")
 
       assert html =~ "Listing Recipients"
       assert html =~ recipient.name
     end
 
     test "saves new recipient", %{conn: conn} do
-      {:ok, index_live, _html} = live(conn, ~p"/recipients")
+      {:ok, index_live, _html} = live(conn, ~p"/admin/recipients")
 
       assert index_live |> element("a", "New Recipient") |> render_click() =~
                "New Recipient"
 
-      assert_patch(index_live, ~p"/recipients/new")
+      assert_patch(index_live, ~p"/admin/recipients/new")
 
       assert index_live
              |> form("#recipient-form", recipient: @invalid_attrs)
@@ -39,7 +44,7 @@ defmodule OcNotifierWeb.RecipientLiveTest do
              |> form("#recipient-form", recipient: @create_attrs)
              |> render_submit()
 
-      assert_patch(index_live, ~p"/recipients")
+      assert_patch(index_live, ~p"/admin/recipients")
 
       html = render(index_live)
       assert html =~ "Recipient created successfully"
@@ -47,12 +52,12 @@ defmodule OcNotifierWeb.RecipientLiveTest do
     end
 
     test "updates recipient in listing", %{conn: conn, recipient: recipient} do
-      {:ok, index_live, _html} = live(conn, ~p"/recipients")
+      {:ok, index_live, _html} = live(conn, ~p"/admin/recipients")
 
       assert index_live |> element("#recipients-#{recipient.id} a", "Edit") |> render_click() =~
                "Edit Recipient"
 
-      assert_patch(index_live, ~p"/recipients/#{recipient}/edit")
+      assert_patch(index_live, ~p"/admin/recipients/#{recipient}/edit")
 
       assert index_live
              |> form("#recipient-form", recipient: @invalid_attrs)
@@ -62,7 +67,7 @@ defmodule OcNotifierWeb.RecipientLiveTest do
              |> form("#recipient-form", recipient: @update_attrs)
              |> render_submit()
 
-      assert_patch(index_live, ~p"/recipients")
+      assert_patch(index_live, ~p"/admin/recipients")
 
       html = render(index_live)
       assert html =~ "Recipient updated successfully"
@@ -70,7 +75,7 @@ defmodule OcNotifierWeb.RecipientLiveTest do
     end
 
     test "deletes recipient in listing", %{conn: conn, recipient: recipient} do
-      {:ok, index_live, _html} = live(conn, ~p"/recipients")
+      {:ok, index_live, _html} = live(conn, ~p"/admin/recipients")
 
       assert index_live |> element("#recipients-#{recipient.id} a", "Delete") |> render_click()
       refute has_element?(index_live, "#recipients-#{recipient.id}")
@@ -81,19 +86,19 @@ defmodule OcNotifierWeb.RecipientLiveTest do
     setup [:create_recipient]
 
     test "displays recipient", %{conn: conn, recipient: recipient} do
-      {:ok, _show_live, html} = live(conn, ~p"/recipients/#{recipient}")
+      {:ok, _show_live, html} = live(conn, ~p"/admin/recipients/#{recipient}")
 
       assert html =~ "Show Recipient"
       assert html =~ recipient.name
     end
 
     test "updates recipient within modal", %{conn: conn, recipient: recipient} do
-      {:ok, show_live, _html} = live(conn, ~p"/recipients/#{recipient}")
+      {:ok, show_live, _html} = live(conn, ~p"/admin/recipients/#{recipient}")
 
       assert show_live |> element("a", "Edit") |> render_click() =~
                "Edit Recipient"
 
-      assert_patch(show_live, ~p"/recipients/#{recipient}/show/edit")
+      assert_patch(show_live, ~p"/admin/recipients/#{recipient}/show/edit")
 
       assert show_live
              |> form("#recipient-form", recipient: @invalid_attrs)
@@ -103,7 +108,7 @@ defmodule OcNotifierWeb.RecipientLiveTest do
              |> form("#recipient-form", recipient: @update_attrs)
              |> render_submit()
 
-      assert_patch(show_live, ~p"/recipients/#{recipient}")
+      assert_patch(show_live, ~p"/admin/recipients/#{recipient}")
 
       html = render(show_live)
       assert html =~ "Recipient updated successfully"
