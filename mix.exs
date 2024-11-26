@@ -46,7 +46,7 @@ defmodule OcNotifier.MixProject do
       {:ex_twilio, "~> 0.10.0"},
       {:oban, "~> 2.18"},
       {:salad_ui, "~> 0.13"},
-      {:exsync, "~> 0.4"},
+      {:exsync, "~> 0.4", only: :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.1.1",

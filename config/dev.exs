@@ -86,5 +86,9 @@ config :swoosh, :api_client, false
 
 config :oc_notifier, :basic_auth, username: "admin", password: "secret"
 
+config :ex_twilio,
+  account_sid: System.get_env("TWILIO_ACCOUNT_SID"),
+  auth_token: System.get_env("TWILIO_AUTH_TOKEN")
+
 # Path to install SaladUI components
 config :salad_ui, components_path: Path.join(File.cwd!(), "lib/oc_notifier_web/components")

@@ -69,10 +69,6 @@ config :oc_notifier, Oban,
   queues: [default: 10],
   repo: OcNotifier.Repo
 
-config :ex_twilio,
-  account_sid: System.get_env("TWILIO_ACCOUNT_SID"),
-  auth_token: System.get_env("TWILIO_AUTH_TOKEN")
-
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
 # Import environment specific config. This must remain at the bottom

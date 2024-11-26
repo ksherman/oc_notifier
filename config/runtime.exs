@@ -1,21 +1,5 @@
 import Config
 
-# config/runtime.exs is executed for all environments, including
-# during releases. It is executed after compilation and before the
-# system starts, so it is typically used to load production configuration
-# and secrets from environment variables or elsewhere. Do not define
-# any compile-time configuration in here, as it won't be applied.
-# The block below contains prod specific runtime configuration.
-
-# ## Using releases
-#
-# If you use `mix release`, you need to explicitly enable the server
-# by passing the PHX_SERVER=true when you start it:
-#
-#     PHX_SERVER=true bin/oc_notifier start
-#
-# Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
-# script that automatically sets the env var above.
 if System.get_env("PHX_SERVER") do
   config :oc_notifier, OcNotifierWeb.Endpoint, server: true
 end
@@ -55,16 +39,19 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "example.com"
-  port = String.to_integer(System.get_env("PORT") || "4000")
+  host = System.get_env("PHX_HOST") || "oc-notifier.fly.dev"
+  port = String.to_integer(System.get_env("PORT") || "8080")
 
   config :oc_notifier, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
   config :oc_notifier, OcNotifierWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [ip: {0, 0, 0, 0, 0, 0, 0, 0}, port: port],
-    # force_ssl: [hsts: true],
     secret_key_base: secret_key_base
+
+  config :oc_notifier, :basic_auth,
+    username: System.get_env("BASIC_AUTH_USERNAME"),
+    password: System.get_env("BASIC_AUTH_PASSWORD")
 
   # ## Configuring the mailer
   #
