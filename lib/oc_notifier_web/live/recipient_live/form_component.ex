@@ -10,7 +10,7 @@ defmodule OcNotifierWeb.RecipientLive.FormComponent do
       <.header>
         <%= @title %>
         <:subtitle>
-          By submitting your phone number, you agree to receive SMS messages from our service. Message and data rates may apply. Message frequency varies. Reply STOP to cancel or HELP for assistance. Carrier charges are the responsibility of the recipient.
+          By submitting your phone number, you agree to receive SMS messages related to the Elgin Winter Shelter's availability. Message and data rates may apply. Message frequency varies. Reply STOP to cancel or reach out to our team to unsubscribe. Carrier charges may apply.
         </:subtitle>
       </.header>
 

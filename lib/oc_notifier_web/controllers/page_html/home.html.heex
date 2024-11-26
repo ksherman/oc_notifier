@@ -1,7 +1,7 @@
 <.flash_group flash={@flash} />
 
 <div class="space-y-8">
-  <div class="flex justify-center px-4 py-8 bg-rose-200 border-b-8">
+  <div class="flex justify-center px-4 py-8 border-b-8 bg-rose-200">
     <h1 class="text-rose-900">Elgin Winter Shelter Updates</h1>
   </div>
 
@@ -16,7 +16,7 @@
             Sent: <%= Calendar.strftime(
               @latest_message.inserted_at |> DateTime.shift_zone!("America/Chicago"),
               "%B %d, %Y at %I:%M %p"
-            ) %> 
+            ) %>
           </p>
         </div>
       </div>
@@ -26,8 +26,8 @@
       <h2>Subscribe to Updates</h2>
 
       <p>Enter your phone number to receive updates via SMS.</p>
-      <div class="text-sm text-gray-600 mt-2">
-        By submitting your phone number, you agree to receive SMS messages from our service. Message and data rates may apply. Message frequency varies. Reply STOP to cancel or HELP for assistance. Carrier charges are the responsibility of the recipient.
+      <div class="mt-2 text-sm text-gray-600">
+        By submitting your phone number, you agree to receive SMS messages related to the Elgin Winter Shelter's availability. Message and data rates may apply. Message frequency varies. Reply STOP to cancel or reach out to our team to unsubscribe. Carrier charges may apply.
       </div>
     </div>
   </div>
