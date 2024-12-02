@@ -66,7 +66,7 @@ config :tails, colors_file: Path.join(File.cwd!(), "assets/tailwind.colors.json"
 
 config :oc_notifier, Oban,
   engine: Oban.Engines.Basic,
-  queues: [default: 10],
+  queues: [default: 25, email: 25, sms: 25],
   repo: OcNotifier.Repo
 
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase

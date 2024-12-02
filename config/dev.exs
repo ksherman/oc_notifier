@@ -82,7 +82,14 @@ config :phoenix_live_view,
   enable_expensive_runtime_checks: true
 
 # Disable swoosh api client as it is only required for production adapters.
-config :swoosh, :api_client, false
+# config :swoosh, :api_client, false
+config :swoosh, :api_client, Swoosh.ApiClient.Req
+
+config :oc_notifier, OcNotifier.Mailer,
+  adapter: Swoosh.Adapters.AmazonSES,
+  region: "us-west-2",
+  access_key: System.get_env("AWS_ACCESS_KEY"),
+  secret: System.get_env("AWS_SECRET_KEY")
 
 config :oc_notifier, :basic_auth, username: "admin", password: "secret"
 

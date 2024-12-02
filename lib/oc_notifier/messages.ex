@@ -8,6 +8,7 @@ defmodule OcNotifier.Messages do
   alias OcNotifier.Repo
 
   alias OcNotifier.Messages.Message
+  alias OcNotifier.Recipients
 
   @doc """
   Returns the list of message.
@@ -111,5 +112,17 @@ defmodule OcNotifier.Messages do
   """
   def change_message(%Message{} = message, attrs \\ %{}) do
     Message.changeset(message, attrs)
+  end
+
+  def enqueue_emails(message) do
+    Recipients.list_active_recipients_with_email()
+    |> Enum.map(&OcNotifier.Workers.Email.new(%{recipient: &1, message: message}))
+    |> Oban.insert_all(queue: :email)
+  end
+
+  def enqueue_sms(message) do
+    Recipients.list_active_recipients_with_sms()
+    |> Enum.map(&OcNotifier.Workers.SMS.new(%{recipient: &1, message: message}))
+    |> Oban.insert_all(queue: :sms)
   end
 end

@@ -2,6 +2,7 @@ defmodule OcNotifier.Recipients.Recipient do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:name, :phone, :email, :is_active]}
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "recipients" do

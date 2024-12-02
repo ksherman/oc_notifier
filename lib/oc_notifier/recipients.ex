@@ -21,6 +21,14 @@ defmodule OcNotifier.Recipients do
     Repo.all(Recipient)
   end
 
+  def list_active_recipients_with_email do
+    Repo.all(from r in Recipient, where: not is_nil(r.email), where: r.is_active == true)
+  end
+
+  def list_active_recipients_with_sms do
+    Repo.all(from r in Recipient, where: not is_nil(r.phone), where: r.is_active == true)
+  end
+
   @doc """
   Gets a single recipient.
 
