@@ -3,19 +3,15 @@ defmodule OcNotifierWeb.RecipientLive.FormComponent do
 
   alias OcNotifier.Recipients
 
+  attr :class, :string, default: nil
+
   @impl true
   def render(assigns) do
     ~H"""
     <div>
-      <.header>
-        <%= @title %>
-        <:subtitle>
-          By submitting your phone number, you agree to receive SMS messages related to the Elgin Winter Shelter's availability. Message and data rates may apply. Message frequency varies. Reply STOP to cancel or reach out to our team to unsubscribe. Carrier charges may apply.
-        </:subtitle>
-      </.header>
-
-      <.simple_form
+      <.form
         for={@form}
+        class={@class}
         id="recipient-form"
         phx-target={@myself}
         phx-change="validate"
@@ -24,13 +20,17 @@ defmodule OcNotifierWeb.RecipientLive.FormComponent do
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:phone]} type="number" label="Phone" />
         <.input field={@form[:email]} type="text" label="Email" />
-        <.input field={@form[:is_active]} type="checkbox" label="Is active" />
-        <:actions>
-          <.button class="bg-rose-600 hover:bg-rose-700" phx-disable-with="Saving...">
-            Submit
-          </.button>
-        </:actions>
-      </.simple_form>
+        <div class="hidden">
+          <.input field={@form[:is_active]} type="checkbox" label="Is active" />
+        </div>
+        <p class="py-2 text-sm text-gray-600">
+          By submitting your phone number, you agree to receive SMS messages related to the Elgin Winter Shelter's availability. Message and data rates may apply. Reply STOP to cancel or reach out to our team to unsubscribe. By submitting your email address, you agree to receive email messages related to the Elgin Winter Shelter's availability.
+        </p>
+
+        <.button class="mt-4 bg-rose-600 hover:bg-rose-700" phx-disable-with="Saving...">
+          Submit
+        </.button>
+      </.form>
     </div>
     """
   end

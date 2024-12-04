@@ -21,16 +21,22 @@
         </div>
       <% end %>
 
-      <div class="max-w-2xl mx-auto">
-        <h2>Subscribe to Updates</h2>
+      <div class="py-8 bg-rose-50">
+        <div class="max-w-2xl mx-auto">
+          <.header>
+            <h2>Subscribe to Updates</h2>
+          </.header>
 
-        <div class="py-2 text-sm text-gray-600">
-          Subscribe to receive updates on the Elgin Winter Shelter.
+          <.live_component
+            module={OcNotifierWeb.RecipientLive.FormComponent}
+            id="new-recipient"
+            action={:new}
+            class="p-4 bg-white rounded-lg"
+            recipient={%OcNotifier.Recipients.Recipient{}}
+            title="Subscribe to Updates"
+            patch={~p"/"}
+          />
         </div>
-
-        <.button phx-click="open_modal" class="bg-rose-600 hover:bg-rose-700">
-          Subscribe Now
-        </.button>
       </div>
     </div>
   </div>
@@ -50,21 +56,3 @@
     </p>
   </footer>
 </div>
-
-<%= if @show_modal do %>
-  <.modal
-    id="recipient-modal"
-    show={true}
-    on_cancel={JS.dispatch("click", to: "#close-modal-button")}
-  >
-    <.live_component
-      module={OcNotifierWeb.RecipientLive.FormComponent}
-      id="new-recipient"
-      action={:new}
-      recipient={%OcNotifier.Recipients.Recipient{}}
-      title="Subscribe to Updates"
-      patch={~p"/"}
-    />
-    <button id="close-modal-button" phx-click="close_modal" class="hidden"></button>
-  </.modal>
-<% end %>
