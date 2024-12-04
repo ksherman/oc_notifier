@@ -5,6 +5,8 @@ defmodule OcNotifier.Messages do
 
   import Ecto.Query, warn: false
 
+  require Logger
+
   alias OcNotifier.Repo
 
   alias OcNotifier.Messages.Message
@@ -65,6 +67,15 @@ defmodule OcNotifier.Messages do
     %Message{}
     |> Message.changeset(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, message} ->
+        enqueue_message(message)
+
+        {:ok, message}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
   end
 
   @doc """
@@ -114,15 +125,43 @@ defmodule OcNotifier.Messages do
     Message.changeset(message, attrs)
   end
 
-  def enqueue_emails(message) do
-    Recipients.list_active_recipients_with_email()
-    |> Enum.map(&OcNotifier.Workers.Email.new(%{recipient: &1, message: message}))
-    |> Oban.insert_all(queue: :email)
+  def enqueue_message(message) do
+    case send_messages?() do
+      true ->
+        update_message(message, %{sent_at: DateTime.utc_now()})
+
+        enqueue_emails(message)
+        enqueue_sms(message)
+
+      false ->
+        Logger.warning("Not sending message #{message.id} because sending messages is disabled")
+        :ok
+    end
   end
 
-  def enqueue_sms(message) do
-    Recipients.list_active_recipients_with_sms()
-    |> Enum.map(&OcNotifier.Workers.SMS.new(%{recipient: &1, message: message}))
-    |> Oban.insert_all(queue: :sms)
+  defp enqueue_emails(message) do
+    workers =
+      Recipients.list_active_recipients_with_email()
+      |> Enum.map(&OcNotifier.Workers.Email.new(%{recipient: &1, message: message}))
+
+    Logger.info(
+      "Queued #{length(workers)} email workers for message #{message.id} - #{message.text}"
+    )
+
+    Oban.insert_all(workers, queue: :email)
   end
+
+  defp enqueue_sms(message) do
+    workers =
+      Recipients.list_active_recipients_with_sms()
+      |> Enum.map(&OcNotifier.Workers.SMS.new(%{recipient: &1, message: message}))
+
+    Logger.info(
+      "Queued #{length(workers)} SMS workers for message #{message.id} - #{message.text}"
+    )
+
+    Oban.insert_all(workers, queue: :sms)
+  end
+
+  def send_messages?, do: Application.get_env(:oc_notifier, :send_messages)
 end

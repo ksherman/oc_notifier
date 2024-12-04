@@ -1,0 +1,66 @@
+<.header class="mb-8">
+  New Message
+  <:subtitle>
+    <p class="text-lg">Compose a new message to send to your subscribers.</p>
+    <p class="text-sm text-gray-600">
+      Messages will be sent to all subscribers, to SMS and email.
+    </p>
+  </:subtitle>
+</.header>
+
+<div class="grid grid-cols-1 gap-12 md:grid-cols-2">
+  <div>
+    <.live_component
+      module={OcNotifierWeb.MessageLive.FormComponent}
+      id={:new}
+      title=""
+      action={:new}
+      message={@message}
+      patch={~p"/admin/messages"}
+    />
+  </div>
+
+  <div class="space-y-4">
+    <h2 class="text-lg font-semibold">Sending to:</h2>
+
+    <.accordion>
+      <.accordion_item>
+        <.accordion_trigger>
+          SMS Recipients (<%= length(@sms_recipients) %>)
+        </.accordion_trigger>
+
+        <.accordion_content>
+          <div class="space-y-2">
+            <%= for recipient <- @sms_recipients do %>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-gray-50">
+                <span><%= recipient.name %></span>
+                <span class="text-sm text-gray-500"><%= recipient.phone %></span>
+              </div>
+            <% end %>
+          </div>
+        </.accordion_content>
+      </.accordion_item>
+    </.accordion>
+
+    <.accordion>
+      <.accordion_item>
+        <.accordion_trigger>
+          Email Recipients (<%= length(@email_recipients) %>)
+        </.accordion_trigger>
+
+        <.accordion_content>
+          <div class="space-y-2">
+            <%= for recipient <- @email_recipients do %>
+              <div class="flex items-center justify-between p-2 rounded-lg bg-gray-50">
+                <span><%= recipient.name %></span>
+                <span class="text-sm text-gray-500"><%= recipient.email %></span>
+              </div>
+            <% end %>
+          </div>
+        </.accordion_content>
+      </.accordion_item>
+    </.accordion>
+  </div>
+</div>
+
+<.back navigate={~p"/admin/messages"}>Back to messages</.back>

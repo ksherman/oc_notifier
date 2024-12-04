@@ -29,7 +29,7 @@ defmodule OcNotifierWeb.Router do
 
     scope "/messages" do
       live "/", MessageLive.Index, :index
-      live "/new", MessageLive.Index, :new
+      live "/new", MessageLive.New, :new
       live "/:id/edit", MessageLive.Index, :edit
       live "/:id", MessageLive.Show, :show
       live "/:id/show/edit", MessageLive.Show, :edit

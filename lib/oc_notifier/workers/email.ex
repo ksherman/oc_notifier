@@ -15,7 +15,15 @@ defmodule OcNotifier.Workers.Email do
     |> from("no-reply@mail.elgin-winter-shelter.org")
     |> to(recipient["email"])
     |> subject("Elgin Winter Shelter Update")
-    |> text_body(message["text"])
+    |> text_body(append_unsubscribe(recipient["id"], message["text"]))
     |> Mailer.deliver()
+  end
+
+  defp append_unsubscribe(recipient_id, text) do
+    text <>
+      """
+      \n\n\n
+      To unsubscribe from these emails, please visit https://elgin-winter-shelter.org/unsubscribe/email/#{recipient_id}.
+      """
   end
 end

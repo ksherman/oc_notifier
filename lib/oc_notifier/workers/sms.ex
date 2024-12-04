@@ -3,10 +3,12 @@ defmodule OcNotifier.Workers.SMS do
 
   require Logger
 
+  alias OcNotifier.Integrations.SmsMessaging
+
   @impl Oban.Worker
-  def perform(%{args: %{"recipient" => recipient, "message" => _message}}) do
+  def perform(%{args: %{"recipient" => recipient, "message" => message}}) do
     Logger.info("Sending SMS to #{recipient["phone"]}")
 
-    :ok
+    SmsMessaging.send_message(recipient["phone"], message["text"])
   end
 end

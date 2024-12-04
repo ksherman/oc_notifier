@@ -2,7 +2,6 @@ defmodule OcNotifierWeb.MessageLive.Index do
   use OcNotifierWeb, :live_view
 
   alias OcNotifier.Messages
-  alias OcNotifier.Messages.Message
 
   @impl true
   def mount(_params, _session, socket) do
@@ -20,15 +19,9 @@ defmodule OcNotifierWeb.MessageLive.Index do
     |> assign(:message, Messages.get_message!(id))
   end
 
-  defp apply_action(socket, :new, _params) do
-    socket
-    |> assign(:page_title, "New Message")
-    |> assign(:message, %Message{})
-  end
-
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Message")
+    |> assign(:page_title, "Listing Messages")
     |> assign(:message, nil)
   end
 

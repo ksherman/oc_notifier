@@ -11,6 +11,8 @@ config :oc_notifier,
       environment variable TWILIO_PHONE_NUMBER is missing.
       """)
 
+config :oc_notifier, send_messages: System.get_env("SEND_MESSAGES", "true") == "true"
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||

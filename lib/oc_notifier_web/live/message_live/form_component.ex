@@ -9,16 +9,18 @@ defmodule OcNotifierWeb.MessageLive.FormComponent do
   def render(assigns) do
     ~H"""
     <div class="flex flex-col gap-6">
-      <.header>
-        <%= @title %>
-        <:subtitle>Use this form to send messages to subscribers.</:subtitle>
-      </.header>
+      <%= if @title != "" do %>
+        <.header>
+          <%= @title %>
+          <:subtitle>Use this form to send messages to subscribers.</:subtitle>
+        </.header>
+      <% end %>
 
       <.form
         :let={f}
         for={@form}
         phx-submit="save"
-        class="grid w-full items-start gap-6"
+        class="grid items-start w-full gap-6"
         phx-target={@myself}
         phx-change="validate"
       >
@@ -80,7 +82,7 @@ defmodule OcNotifierWeb.MessageLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Message created successfully")
-         |> push_patch(to: socket.assigns.patch)}
+         |> push_navigate(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
