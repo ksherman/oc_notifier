@@ -62,4 +62,8 @@ if config_env() == :prod do
     region: "us-west-2",
     access_key: System.get_env("AWS_ACCESS_KEY"),
     secret: System.get_env("AWS_SECRET_KEY")
+
+  config :ex_twilio,
+    account_sid: System.get_env("TWILIO_ACCOUNT_SID"),
+    auth_token: System.get_env("TWILIO_AUTH_TOKEN")
 end
