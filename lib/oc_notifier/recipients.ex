@@ -109,4 +109,12 @@ defmodule OcNotifier.Recipients do
   def change_recipient(%Recipient{} = recipient, attrs \\ %{}) do
     Recipient.changeset(recipient, attrs)
   end
+
+  @doc """
+  Gets a recipient by ID.
+  Returns nil if the recipient doesn't exist.
+  """
+  def get_recipient(id) do
+    Repo.get(Recipient, id)
+  end
 end

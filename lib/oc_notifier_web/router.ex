@@ -22,6 +22,7 @@ defmodule OcNotifierWeb.Router do
     pipe_through :browser
 
     live "/", HomeLive
+    live "/unsubscribe/email/:recipient_id", UnsubscribeLive
   end
 
   scope "/admin", OcNotifierWeb do
