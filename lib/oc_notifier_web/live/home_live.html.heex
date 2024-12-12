@@ -1,41 +1,42 @@
 <div class="flex flex-col min-h-screen">
-  <div class="flex-grow space-y-8">
+  <div class="flex-grow">
+    <.flash_group flash={@flash} />
+
     <div class="flex justify-center px-4 py-8 border-b-8 bg-rose-200">
       <h1 class="text-rose-900">Elgin Winter Shelter Updates</h1>
     </div>
 
     <div class="space-y-8">
       <%= if @latest_message do %>
-        <div class="max-w-2xl mx-auto">
+        <div class="max-w-2xl py-16 mx-auto text-center">
           <h2>Most Recent Message</h2>
 
           <div>
-            <p class="mt-4 text-lg"><%= @latest_message.text %></p>
             <p class="mt-2 text-sm text-gray-600">
               Sent: <%= Calendar.strftime(
                 @latest_message.inserted_at |> DateTime.shift_zone!(@timezone),
                 "%B %d, %Y at %I:%M %p"
               ) %>
             </p>
+
+            <p class="mt-4 text-xl"><%= @latest_message.text %></p>
           </div>
         </div>
       <% end %>
 
       <div class="py-8 bg-rose-50">
-        <div class="max-w-2xl mx-auto">
+        <div class="max-w-2xl mx-auto text-center">
           <.header>
-            <h2>Subscribe to Updates</h2>
+            <h2>Stay Informed</h2>
           </.header>
 
-          <.live_component
-            module={OcNotifierWeb.RecipientLive.FormComponent}
-            id="new-recipient"
-            action={:new}
-            class="p-4 bg-white rounded-lg"
-            recipient={%OcNotifier.Recipients.Recipient{}}
-            title="Subscribe to Updates"
-            patch={~p"/"}
-          />
+          <p class="mt-4 text-gray-600">
+            Get notified about shelter updates directly to your phone or email.
+          </p>
+
+          <.button class="mt-6 bg-rose-600 hover:bg-rose-700" phx-click="open_modal">
+            Subscribe Now
+          </.button>
         </div>
       </div>
     </div>
@@ -56,3 +57,19 @@
     </p>
   </footer>
 </div>
+
+<.modal :if={@show_modal} id="subscribe-modal" show on_cancel={JS.patch(~p"/")}>
+  <.header>
+    <h2>Subscribe to Updates</h2>
+  </.header>
+
+  <.live_component
+    module={OcNotifierWeb.RecipientLive.FormComponent}
+    id="new-recipient"
+    action={:new}
+    class="mt-4"
+    recipient={%OcNotifier.Recipients.Recipient{}}
+    title="Subscribe to Updates"
+    patch={~p"/"}
+  />
+</.modal>

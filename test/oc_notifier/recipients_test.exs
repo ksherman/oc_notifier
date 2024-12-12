@@ -36,9 +36,17 @@ defmodule OcNotifier.RecipientsTest do
 
     test "update_recipient/2 with valid data updates the recipient" do
       recipient = recipient_fixture()
-      update_attrs = %{name: "some updated name", phone: 43, email: "some updated email", is_active: false}
 
-      assert {:ok, %Recipient{} = recipient} = Recipients.update_recipient(recipient, update_attrs)
+      update_attrs = %{
+        name: "some updated name",
+        phone: 43,
+        email: "some updated email",
+        is_active: false
+      }
+
+      assert {:ok, %Recipient{} = recipient} =
+               Recipients.update_recipient(recipient, update_attrs)
+
       assert recipient.name == "some updated name"
       assert recipient.phone == 43
       assert recipient.email == "some updated email"

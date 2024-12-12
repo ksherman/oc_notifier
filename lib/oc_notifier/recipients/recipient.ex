@@ -2,7 +2,7 @@ defmodule OcNotifier.Recipients.Recipient do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: [:name, :phone, :email, :is_active]}
+  @derive {Jason.Encoder, only: [:name, :phone, :email, :id]}
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "recipients" do
@@ -19,5 +19,7 @@ defmodule OcNotifier.Recipients.Recipient do
     recipient
     |> cast(attrs, [:name, :phone, :email, :is_active])
     |> validate_required([:name, :is_active])
+    |> unique_constraint(:phone, message: "Phone number already exists")
+    |> unique_constraint(:email, message: "Email already exists")
   end
 end

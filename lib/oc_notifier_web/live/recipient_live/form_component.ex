@@ -77,7 +77,10 @@ defmodule OcNotifierWeb.RecipientLive.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Recipient created successfully")
+         |> put_flash(
+           :info,
+           "Thank you for subscribing! You will now receive updates about the Elgin Winter Shelter."
+         )
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

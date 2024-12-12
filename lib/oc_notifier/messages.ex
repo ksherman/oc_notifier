@@ -22,14 +22,16 @@ defmodule OcNotifier.Messages do
 
   """
   def list_message do
-    Repo.all(Message)
+    Message
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
   end
 
   def get_latest_message do
-    yesterday = DateTime.utc_now() |> DateTime.add(-24, :hour)
+    comparison_date = DateTime.utc_now() |> DateTime.add(-48, :hour)
 
     Message
-    |> where([m], m.sent_at > ^yesterday)
+    |> where([m], m.sent_at > ^comparison_date)
     |> order_by(desc: :inserted_at)
     |> limit(1)
     |> Repo.one()
